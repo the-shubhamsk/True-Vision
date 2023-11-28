@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: lightcyan;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #ffa500;
+            text-align: center;
+            color: #ffffff;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header .logo img {
+            height: 80px;
+            width: auto;
+            margin-right: 10px;
+            margin-left: 10px;
+            border-radius: 50%; /* Make the logo rounded */
+        }
+
+        header .quote {
+            text-align: left;
+            text-shadow:2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-left: 0px; 
+            text-decoration-color: black;
+            position: relative;    
+        }
+
+
+        header .title {
+            font-size: 44px;
+            margin: 0;
+            color: black;
+        }
+
+        header .login-signup {
+            text-align: right;
+        }
+
+        .login-signup a {
+            margin-left: 10px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .login-signup a:hover {
+            color: #ff4500;
+        }
+
+        .app-description {
+            background-color: lightgrey;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px 20px;
+            background-color: #ffffff;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-info {
+            padding: 0 20px;
+        }
+
+        .app-info h3 {
+            color: #007bff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .app-info p {
+            color: #6c757d;
+        }
+
+        .app-image img {
+              height: 400px;
+              width: 300px;
+              border-radius: 10px;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Change the alpha value to control darkness */
+              transition: transform 0.3s ease-in-out;
+            }
+
+        .app-image img:hover {
+            transform: scale(1.1);
+        }
+
+        footer {
+            text-align: center;
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px 0;
+            
+        }
+        .footer h4 {
+            color: #007bff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            
+        }
+        .img{
+            height: 100px;
+            width: auto;
+            object-fit: contain;
+            display: none;
+            border: 5px solid cornflowerblue ;
+        }
+        .imageUploaded{
+            margin-top: 10 px;
+        }
+        .fileText{
+            margin-bottom: 10px;
+        }
+        /* Add this to your existing styles or in a separate CSS file */
+
+/* Add this to your existing styles or in a separate CSS file */
+
+#imageGallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto; /* Adjust the height as needed */
+  overflow: hidden; /* Ensure that images don't overflow the container */
+  
+}
+
+.image-container {
+  border: 2px solid #ddd; /* Border color */
+  padding: 5px; /* Padding around each image */
+  margin: 5px; /* Margin between images */
+  width: 400px; /* Adjust the width of each image container as needed */
+}
+
+.firebase-image {
+  max-width: 100%; /* Ensure images don't exceed the container width */
+  height: auto; /* Maintain aspect ratio */
+}
+#mainDiv{
+    display: flex;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+}
+
+
+  #imageInput {
+    display: none;
+  }
+
+  #customUpload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: #fff;
+  }
+    </style>
+    
+    <!-- <script type="module" src="https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-storage-compat.js"></script>
+<script src="your-firebase-config-file.js"></script>
+
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="logo.jpg" alt="App Logo">
+
+    <div class="quote">
+        <p><b> Shaping Imaginations for the Blind</b></p>
+    </div>
+    </div>
+    <div class="title">
+        <b>TRUE VISION</b>
+    </div>
+    <div class="login-signup">
+        <a href="Data.html" id="logoutBtn" class="btn btn-primary">Logout</a>
+    </div>
+</header>
+
+
+    
+
+   <div class="app-section">
+    <div class="app-info">
+        <h3>WELCOME</h3>
+        <p><b>Upload Your New Image</b></p>
+        <form>
+
+     <input type="file" id="imageInput" accept="image/*">
+
+    <label for="imageInput" id="customUpload" title="Upload">+</label>
+    <span class="fileText"></span>
+    <!-- <button onclick="uploadImage()">Upload Image</button> -->
+    <button type="button" onclick="uploadImage()">Upload Image</button>
+
+    <!-- <div class="bar">
+        <div class="progress"></div>
+    </div>
+    <div class="uploadPercentage">0%</div>
+    <div class="imageUploaded">
+        <img  class="img">
+    </div> -->
+    <!-- Add this to your HTML body -->
+    <div id="mainDiv">
+        <div id="imageGallery"></div>
+    </div>
+
+
+
+
+        </form>
+    </div>
+</div>
+<div class="app-section">
+    <div class="app-image">
+        <img src="105.png" alt="App Image 1">
+    </div>
+    <div class="app-image">
+        <img src="103.jpg" alt="App Image 1">
+    </div>
+    <div class="app-image">
+        <img src="100.jpg" alt="App Image 1">
+    </div>
+    <div class="app-image">
+        <img src="104.png" alt="App Image 1">
+    </div>
+</div>
+<!-- Add this to your HTML body -->
+<div class="imageUploaded">
+    <img class="img" alt="Uploaded Image">
+</div>
+
+
+<footer>
+    <p><h4><b>&copy; 2023 TRUE VISION. All rights reserved.</b></h4></p>
+</footer>
+<!-- <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase.js"></script> -->
+<script src="app.js"></script>
+<!-- <script src="app.js"></script> -->
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- <script  src="https://www.gstatic.com/firebasejs/10.6.0/firebase.js"></script>
+<script type="module">import { getStorage, ref } from "firebase/storage";</script> -->
+
+
+<!-- <script>
+    
+
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAsXOaPY8TGX7eRHdc_MkZHJVNyJhrvnEE",
+  authDomain: "visio-sense.firebaseapp.com",
+  databaseURL: "https://visio-sense-default-rtdb.firebaseio.com",
+  projectId: "visio-sense",
+  storageBucket: "visio-sense.appspot.com",
+  messagingSenderId: "265003529129",
+  appId: "1:265003529129:web:dce4a052e81b3b423c4ab8",
+  measurementId: "G-7XJM7ESBWR"
+};
+
+
+
+// firebase.initializeApp(firebaseConfig);
+
+    var fileText=document.querySelector(".fileText");
+    var uploadPercentage=document.querySelector(".uploadPercentage");
+    var progress=document.querySelector(".progress");
+    var percentVal;
+    var fileItem;
+    var fileName;
+    var img = document.querySelector(".img");
+
+    function getFile(e){
+        fileItem=e.target.files[0];
+        fileName=fileItem.name;
+        fileText.innerHTML=fileName;
+    }
+
+    function uploadImage(){
+        let storageRef=firebase.storage().ref("images/"+fileName);
+        let uploadTask = storageRef.put(fileItem);
+
+        uploadTask.on("state_changed",(snapshot)=>{
+            console.log(snapshot);
+            percentVal=Math.floor((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+            console.log(percentVal);
+            uploadPercentage.innerHTML = percentVal+"%";
+            progress.style.width=percentVal+"%";
+        },(error)=>{
+            console.log("Error is ",error);
+        },()=>{
+            uploadTask.snapshot.ref.getDownloadURL().then((url)=>{
+                console.log("URL",url);
+
+                if(url != ""){
+                    img.setAttribute("src",url);
+                    img.style.display="block";
+                }
+            })
+        })
+    }
+
+    
+
+</script> -->
+
+</body>
+</html>
